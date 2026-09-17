@@ -1,0 +1,108 @@
+{
+  "info": {
+    "name": "Simple Bank Application",
+    "description": "Postman collection covering all 5 endpoints of the Simple Bank Application backend (FastAPI + Postgres/Supabase).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "account_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create Account",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": 1,\n  \"accountType\": \"SAVINGS\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/accounts",
+          "host": ["{{base_url}}"],
+          "path": ["api", "accounts"]
+        }
+      }
+    },
+    {
+      "name": "Get Account",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/accounts/{{account_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "accounts", "{{account_id}}"]
+        }
+      }
+    },
+    {
+      "name": "Deposit",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 500\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/accounts/{{account_id}}/deposit",
+          "host": ["{{base_url}}"],
+          "path": ["api", "accounts", "{{account_id}}", "deposit"]
+        }
+      }
+    },
+    {
+      "name": "Withdraw",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 200\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/accounts/{{account_id}}/withdraw",
+          "host": ["{{base_url}}"],
+          "path": ["api", "accounts", "{{account_id}}", "withdraw"]
+        }
+      }
+    },
+    {
+      "name": "Get Transaction History",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/accounts/{{account_id}}/transactions",
+          "host": ["{{base_url}}"],
+          "path": ["api", "accounts", "{{account_id}}", "transactions"]
+        }
+      }
+    }
+  ]
+}
