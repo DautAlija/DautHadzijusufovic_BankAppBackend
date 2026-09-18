@@ -1,11 +1,19 @@
 from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from database import get_db
 from services import AccountService
 
+# The React frontend runs on a different port than the API, and browsers block cross-origin requests by default.
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['http://localhost:5173'],
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
 account_service = AccountService()
 
 
