@@ -4,9 +4,9 @@ from models import Account, Transaction, User
 
 
 class UserRepository:
-    def create_user(self, db: Session, name: str, email: str):
-        """Create and persist a new user record, then return it."""
-        user = User(name=name, email=email)
+    def create_user(self, db: Session, name: str, email: str, password: str):
+        """Create and persist a new user record with a hashed password, then return it."""
+        user = User(name=name, email=email, password=password)
         db.add(user)
         # commit() makes the insert durable in the database; refresh() loads the generated primary key and any defaults back into the object.
         db.commit()
@@ -35,6 +35,10 @@ class AccountRepository:
     def get_account_by_id(self, db: Session, account_id: int):
         """Return an account by ID or None if no row matches."""
         return db.query(Account).filter(Account.account_id == account_id).first()
+
+    def get_accounts_by_user(self, db: Session, user_id: int):
+        """Return all accounts belonging to a specific user as a list."""
+        return db.query(Account).filter(Account.user_id == user_id).all()
 
     def update_balance(self, db: Session, account: Account, new_balance):
         """Update an existing account's balance and return the refreshed row."""

@@ -16,7 +16,10 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     # Passing the callable creates a fresh UTC timestamp for each inserted row.
     created_at = Column(DateTime, default=datetime.utcnow)
-
+    password = Column(String, nullable=False)
+    #will store a haashed value of the user's password
+    role = Column(String, default="customer")
+    # The role column indicates the user's role within the system, defaulting to "customer".
 
 class Account(Base):
     """Represents a bank account belonging to a user."""

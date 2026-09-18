@@ -1,13 +1,28 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import api from '../api'
 
 function CreateAccount() {
+  const [user, setUser] = useState(null)
   const [userId, setUserId] = useState('')
   const [accountType, setAccountType] = useState('SAVINGS')
   const [error, setError] = useState('')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await api.get('/api/me')
+        setUser(response.data)
+        setUserId(response.data.user_id)
+      } catch (err) {
+        setError('Unable to load your profile. Please log in again.')
+      }
+    }
+
+    fetchCurrentUser()
+  }, [])
 
   // useNavigate lets us move to a different page after an action succeeds.
   const handleSubmit = async (event) => {
@@ -36,17 +51,27 @@ function CreateAccount() {
     <div style={{ maxWidth: '420px', margin: '40px auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Create Account</h1>
 
+      {user && (
+        <p style={{ textAlign: 'center', marginBottom: '16px' }}>
+          Creating account for: {user.name}
+        </p>
+      )}
+
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         <label>
           <span style={{ display: 'block', marginBottom: '6px' }}>User ID</span>
-          <input
-            type="number"
-            min="1"
-            value={userId}
-            onChange={(event) => setUserId(event.target.value)}
-            required
-            style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
-          />
+          <div
+            style={{
+              width: '100%',
+              padding: '10px',
+              boxSizing: 'border-box',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              background: '#f7f7f7',
+            }}
+          >
+            {userId || 'Loading...'}
+          </div>
         </label>
 
         <label>
